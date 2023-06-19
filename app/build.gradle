@@ -1,0 +1,78 @@
+plugins {
+    id 'com.android.application'
+    id 'org.jetbrains.kotlin.android'
+}
+
+android {
+    namespace 'com.khales.gradle3'
+    compileSdk 33
+
+    defaultConfig {
+        applicationId "com.khales.gradle3"
+        minSdk 21
+        targetSdk 33
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+        /**
+         * khoud balak law 7tet el feilds de fl default config yb2a kda htsm3 3ala el app kolo (bm3na eno hysm3 fe kol el build types w hysm3 fe kol el flavors)
+         *
+         * note: lakn khoud balak enta momkn t3mel feilds le kol (flavour) aw (build type)
+         */
+        buildConfigField "String", "BACKEND_HOST", '"www.paid.com"'
+        buildConfigField ("String", "BASE_URL",baseURL )
+        buildConfigField ("Boolean", "IS_COM", "false")
+        signingConfig signingConfigs.debug //da 3lshan mwdo3 eno msh by-run 3ala el pro momkn nb2a nshoufha b3den
+
+
+    }
+
+    buildFeatures {
+        buildConfig = true
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            buildConfigField ("Boolean", "IS_COM_release", "false")
+        }
+        debug {
+            buildConfigField ("Boolean", "IS_COM_debug", "false")
+            applicationIdSuffix '.debuggg'
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+    flavorDimensions 'product'
+    productFlavors {
+        free {
+            buildConfigField ("Boolean", "IS_COM_free", "false")
+
+            dimension 'product'
+        }
+        pro {
+            buildConfigField ("Boolean", "IS_COM_pro", "false")
+
+            dimension 'product'
+        }
+    }
+}
+
+dependencies {
+
+    implementation 'androidx.core:core-ktx:1.7.0'
+    implementation 'androidx.appcompat:appcompat:1.6.1'
+    implementation 'com.google.android.material:material:1.9.0'
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
+    testImplementation 'junit:junit:4.13.2'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.5'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
+}
